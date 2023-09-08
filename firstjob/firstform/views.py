@@ -1,23 +1,44 @@
+from django.urls import reverse
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
-from .form import MemberForm
+from django.views.generic.edit import CreateView
+from .models import FirstFormModel
+from .models import SecondFormModel
 
-def firstform(request):
-     # if this is a POST request we need to process the form data
-    if request.method == "POST":
-        # create a form instance and populate it with data from the request:
-        form = MemberForm(request.POST)
-        # check whether it's valid:
-        if form.is_valid():
-            obj = form.save()
-            redirect_url = f'/createview/firstmodel/{obj.id}'
-            # process the data in form.cleaned_data as required
-            # ...
-            # redirect to a new URL:
-            return HttpResponseRedirect(redirect_url)
+class FirstFormCreateView(CreateView):
+ 
+    # specify the model for create view
+    model = FirstFormModel
+ 
+    # specify the fields to be displayed
+ 
+    fields = ['firstname', 'lastname']
 
-    # if a GET (or any other method) we'll create a blank form
-    else:
-        form = MemberForm()
+    def form_valid(self, form):
+        # Save the form data and get the created object
+        self.object = form.save()
+        # Redirect to a success URL or return an HttpResponse
+        return super().form_valid(form)
 
-    return render(request, "firstform.html", {"form": form})
+    def get_success_url(self):
+        # Construct the URL for the next page with the saved object's ID
+        return reverse('secondform', args=[self.object.id])
+
+
+class SecondFormCreateView(CreateView):
+ 
+    # specify the model for create view
+    model = SecondFormModel
+ 
+    # specify the fields to be displayed
+ 
+    fields = ['address', 'hobby']
+
+    def form_valid(self, form):
+        # Save the form data and get the created object
+        self.object = form.save()
+        # Redirect to a success URL or return an HttpResponse
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        # Construct the URL for the next page with the saved object's ID
+         return reverse('firstform')

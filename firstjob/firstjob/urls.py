@@ -19,6 +19,5 @@ from django.urls import include, path
 
 urlpatterns = [
     path('', include('firstform.urls')),
-    path('createview/firstmodel/<int:id>', include('secondform.urls')),
     path('admin/', admin.site.urls),
 ]

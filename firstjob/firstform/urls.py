@@ -1,6 +1,8 @@
 from django.urls import path
-from . import views
+from .views import FirstFormCreateView
+from .views import SecondFormCreateView
 
 urlpatterns = [
-    path('', views.firstform, name=''),
+    path('', FirstFormCreateView.as_view(), name='firstform'),
+    path('secondform/<int:id>', SecondFormCreateView.as_view(), name='secondform'),
 ]
