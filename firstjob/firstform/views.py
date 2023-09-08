@@ -21,7 +21,7 @@ class FirstFormCreateView(CreateView):
 
     def get_success_url(self):
         # Construct the URL for the next page with the saved object's ID
-        return reverse('secondform', args=[self.object.id])
+        return reverse('second_form', args=[self.object.id])
 
 
 class SecondFormCreateView(CreateView):
@@ -41,4 +41,4 @@ class SecondFormCreateView(CreateView):
 
     def get_success_url(self):
         # Construct the URL for the next page with the saved object's ID
-         return reverse('firstform')
+         return reverse('first_form')
